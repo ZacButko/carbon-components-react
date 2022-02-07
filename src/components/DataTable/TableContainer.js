@@ -12,25 +12,36 @@ import { settings } from 'carbon-components';
 
 const { prefix } = settings;
 
+const Description = ({tagName, children, ...props}) => {
+  React.createElement(tagName, props, children)
+}
+
+Description.propTypes = {
+  tagName: PropTypes.oneOf(["p", "div"]),
+  children: PropTypes.node,
+}
+
 const TableContainer = ({
   className,
   children,
   title,
   description,
+  descriptionTag = 'p',
   ...rest
 }) => {
   const tableContainerClasses = cx(
     className,
     `${prefix}--data-table-container`
   );
+  
   return (
     <div {...rest} className={tableContainerClasses}>
       {title && (
         <div className={`${prefix}--data-table-header`}>
           <h4 className={`${prefix}--data-table-header__title`}>{title}</h4>
-          <p className={`${prefix}--data-table-header__description`}>
+          <Description tagName={descriptionTag} className={`${prefix}--data-table-header__description`}>
             {description}
-          </p>
+          </Description>
         </div>
       )}
       {children}
@@ -50,6 +61,7 @@ TableContainer.propTypes = {
    * Optional description text for the Table
    */
   description: PropTypes.node,
+  descriptionTag: PropTypes.oneOf(["p", "div"])
 };
 
 export default TableContainer;
